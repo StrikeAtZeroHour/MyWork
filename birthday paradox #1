@@ -1,0 +1,18 @@
+import random
+from statistics import mode
+amount=int(input('how many people you want to set?'))
+test=10000
+dulpicate=0
+
+for a in range(test):
+same=0
+birthdaylist=[]
+for z in range(amount):
+birthdaylist.append(random.randint(0,365))
+for x in birthdaylist:
+if birthdaylist.count(x)>1:
+same=1
+if same==1:
+dulpicate+=1
+
+print('There are ',dulpicate/test*100,'{} chance for at least 2 people have same birthday between {} people'.format('%',amount))

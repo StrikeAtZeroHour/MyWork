@@ -1,0 +1,147 @@
+import random
+import numpy as np
+
+frame=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+result=False
+def GameStart():
+for repeat in range(2):
+frame[random.randint(0,3)][random.randint(0,3)]=2
+
+def gui_update():#畫面更新
+for x in range(4):
+print(frame[x])
+
+def IsFail():
+count=0
+
+for x in range(4):
+    for y in range(4):
+        if frame[x][y]==0:
+            count+=1
+            return False
+if count==0:
+    return True
+def IsSuccess():
+
+for x in range(4):
+    for y in range(4):
+        if frame[x][y]>=64:
+            return True
+return False
+def AskForAction():
+act=input('NextStep: ')
+return act
+
+def left():#DONE#
+for x in range(len(frame)-1,-1,-1):#一定要倒著來遍歷
+for y in range(len(frame[1])-1,-1,-1):
+if frame[x][y]==0:
+frame[x].pop(y)
+frame[x].append(0)
+
+for x in range(len(frame)):
+    for y in range(len(frame[1])):
+        if y>0 and frame[x][y]==frame[x][y-1] and frame[x][y]>0:
+            frame[x][y]*=2
+            frame[x].pop(y-1)
+            frame[x].append(0)
+def right():#DONE#
+reverse()
+
+for x in range(len(frame)-1,-1,-1):#一定要倒著來遍歷
+    for y in range(len(frame[1])-1,-1,-1):
+        if frame[x][y]==0:
+            frame[x].pop(y)
+            frame[x].append(0)
+            
+for x in range(len(frame)):
+    for y in range(len(frame[1])):
+        if y>0 and frame[x][y]==frame[x][y-1] and frame[x][y]>0:
+            frame[x][y]*=2
+            frame[x].pop(y-1)
+            frame[x].append(0)
+
+reverse()
+def up():
+transpose()
+for x in range(len(frame)-1,-1,-1):#一定要倒著來遍歷
+for y in range(len(frame[1])-1,-1,-1):
+if frame[x][y]==0:
+frame[x].pop(y)
+frame[x].append(0)
+
+for x in range(len(frame)):
+    for y in range(len(frame[1])):
+        if y>0 and frame[x][y]==frame[x][y-1] and frame[x][y]>0:
+            frame[x][y]*=2
+            frame[x].pop(y-1)
+            frame[x].append(0)
+transpose()
+def down():
+transpose()
+reverse()
+
+for x in range(len(frame)-1,-1,-1):#一定要倒著來遍歷
+    for y in range(len(frame[1])-1,-1,-1):
+        if frame[x][y]==0:
+            frame[x].pop(y)
+            frame[x].append(0)
+            
+for x in range(len(frame)):
+    for y in range(len(frame[1])):
+        if y>0 and frame[x][y]==frame[x][y-1] and frame[x][y]>0:
+            frame[x][y]*=2
+            frame[x].pop(y-1)
+            frame[x].append(0)
+
+
+reverse()
+transpose()
+def reverse():
+for x in range(4):# 反轉數列
+frame[x].reverse()
+
+def transpose():
+global frame
+matrix=np.array(frame)
+frame=matrix.transpose().tolist() #利用numpy簡潔、快速transpose數列
+
+def insertBlock():#done
+while True:
+x=random.randint(0,3)
+y=random.randint(0,3)
+if frame[x][y]==0:
+frame[x][y]=random.choice([2,4])
+break
+
+GameStart()
+gui_update()
+
+while True:
+command=AskForAction()
+if command=='a':
+left()
+if command=='d':
+right()
+if command=='w':
+up()
+if command=='s':
+down()
+if command=='quit':
+frame=[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]
+if command!='a' and command!='d' and command!='w' and command!='s' and command!='quit':
+print('wrong command.enter "w","a","s","d" to control, or enter "quit" to quit the game\n''----------------------------------------\n''TRY AGAIN\n''----------------------------------------\n')
+continue
+
+result=IsFail()
+if result==True:
+    print("#You Lose, You was Fail to double the block to 64")
+    break
+
+insertBlock()
+gui_update()
+
+result=IsSuccess()
+if result==True:
+    print("#You Win, the 64 block is appeared")
+    break
